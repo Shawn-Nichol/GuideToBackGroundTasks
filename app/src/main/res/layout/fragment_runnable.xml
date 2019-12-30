@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Runnable.RunnableFragment">
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/frag_runnable_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Runnable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_no_handler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="No Handler"
+        app:layout_constraintEnd_toStartOf="@+id/frag_runnable_btn_handler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Handler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_no_handler"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Handler 2"
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Handler 3"
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler2"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler2"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
