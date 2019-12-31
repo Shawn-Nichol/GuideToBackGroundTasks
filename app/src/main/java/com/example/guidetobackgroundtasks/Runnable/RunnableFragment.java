@@ -26,7 +26,15 @@ public class RunnableFragment extends Fragment {
     Button btnHandler;
     Button btnHandler2;
     Button btnHandler3;
+    Button btnStop1;
+    Button btnStop2;
+    Button btnStop3;
+    Button btnStopAll;
     Button btnNoHandler;
+
+    private volatile boolean stop1 = false;
+    private volatile boolean stop2 = false;
+    private volatile boolean stop3 = false;
 
 
     private Handler myHandler = new Handler();
@@ -49,21 +57,48 @@ public class RunnableFragment extends Fragment {
 
         btnHandler = v.findViewById(R.id.frag_runnable_btn_handler);
         btnHandler.setOnClickListener(view -> {
+            stop1 = false;
             Handler1 handler1 = new Handler1(10);
             new Thread(handler1).start();
 
         });
 
+        btnStop1 = v.findViewById(R.id.frag_runnable_btn_handler1_stop);
+        btnStop1.setOnClickListener(view -> {
+            stop1 = true;
+        });
+
+
+
         btnHandler2 = v.findViewById(R.id.frag_runnable_btn_handler2);
         btnHandler2.setOnClickListener(view -> {
+            stop2 = false;
             Handler2 handler2 = new Handler2(10);
             new Thread(handler2).start();
         });
 
+        btnStop2 = v.findViewById(R.id.frag_runnable_btn_handler2_stop);
+        btnStop2.setOnClickListener( view -> {
+            stop2 = true;
+        });
+
         btnHandler3 = v.findViewById(R.id.frag_runnable_btn_handler3);
         btnHandler3.setOnClickListener(view -> {
+            stop3 = false;
             Handler3 handler3 = new Handler3(10);
             new Thread(handler3).start();
+        });
+
+        btnStop3 = v.findViewById(R.id.frag_runnable_btn_handler3_stop);
+        btnStop3.setOnClickListener(view -> {
+            stop3 = true;
+        });
+
+        btnStopAll = v.findViewById(R.id.frag_runnable_btn_stop_all);
+        btnStopAll.setOnClickListener(view -> {
+            stop1 = true;
+            stop2 = true;
+            stop3 = true;
         });
 
         btnNoHandler = v.findViewById(R.id.frag_runnable_btn_no_handler);
@@ -79,7 +114,7 @@ public class RunnableFragment extends Fragment {
 
     public class Handler1 implements Runnable {
 
-        private static final String TAG = "MyLogHandler";
+        private static final String TAG = "MyLogHandler1";
         int mSeconds;
         Button btn;
 
@@ -93,13 +128,15 @@ public class RunnableFragment extends Fragment {
         public void run() {
             btn = v.findViewById(R.id.frag_runnable_btn_handler);
             for(int i = 0; i < mSeconds; i++) {
-
+                if(stop1) {
+                    return;
+                }
                 if(i == 5) {
                     Handler threadHandler = new Handler(Looper.getMainLooper());
                     threadHandler.post(() -> btnHandler.setText("50%"));
 
                 }
-                Log.d(TAG, "run: " + i);
+                Log.d(TAG, "run:" + i);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -111,7 +148,7 @@ public class RunnableFragment extends Fragment {
 
     public class Handler2 implements Runnable {
 
-        private static final String TAG = "MyLogHandler";
+        private static final String TAG = "MyLogHandler2";
         int mSeconds;
         Button btn;
 
@@ -125,7 +162,9 @@ public class RunnableFragment extends Fragment {
         public void run() {
             btn = v.findViewById(R.id.frag_runnable_btn_handler);
             for(int i = 0; i < mSeconds; i++) {
-
+                if(stop2) {
+                    return;
+                }
                 if(i == 5) {
                     btnHandler2.post(() -> btnHandler2.setText("50%"));
 
@@ -142,7 +181,7 @@ public class RunnableFragment extends Fragment {
 
     public class Handler3 implements Runnable {
 
-        private static final String TAG = "MyLogHandler";
+        private static final String TAG = "MyLogHandler3";
         int mSeconds;
         Button btn;
 
@@ -156,7 +195,9 @@ public class RunnableFragment extends Fragment {
         public void run() {
             btn = v.findViewById(R.id.frag_runnable_btn_handler);
             for(int i = 0; i < mSeconds; i++) {
-
+                if(stop3) {
+                    return ;
+                }
                 if(i == 5) {
                     getActivity().runOnUiThread(() -> {
                         btnHandler3.setText("50%");

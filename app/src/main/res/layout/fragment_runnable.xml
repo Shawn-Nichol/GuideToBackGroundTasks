@@ -49,7 +49,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Handler"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/frag_runnable_btn_handler1_stop"
         app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_no_handler"
         app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn" />
 
@@ -57,6 +57,7 @@
         android:id="@+id/frag_runnable_btn_handler2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Handler 2"
         app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler"
         app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler"
@@ -71,6 +72,49 @@
         app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler2"
         app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler2"
         app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler2" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler1_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="STOP 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_handler"
+        app:layout_constraintTop_toTopOf="@+id/frag_runnable_btn_handler" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler2_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="STOP 2"
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler1_stop"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler1_stop"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler1_stop" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_handler3_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="STOP 3"
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler2_stop"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler2_stop"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler2_stop" />
+
+    <Button
+        android:id="@+id/frag_runnable_btn_stop_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="STOP ALL"
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler3_stop"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler3"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.guidetobackgroundtasks.ExampleThread.ExampleThreadingFragment;
-import com.example.guidetobackgroundtasks.MultipleThreads.ThreadingFragment;
 import com.example.guidetobackgroundtasks.Runnable.RunnableFragment;
 import com.google.android.material.navigation.NavigationView;
 
