@@ -8,5 +8,8 @@
     <item android:id="@+id/nav_drawer_2"
         android:title="Runnable Thread"/>
 
+    <item android:id="@+id/nav_drawer_3"
+        android:title="Looper"/>
+
 
 </menu>
