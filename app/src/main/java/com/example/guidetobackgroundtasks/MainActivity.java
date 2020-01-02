@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.guidetobackgroundtasks.ExampleThread.ExampleThreadingFragment;
+import com.example.guidetobackgroundtasks.Handler.HandlerFragment;
 import com.example.guidetobackgroundtasks.Looper.LooperFragment;
 import com.example.guidetobackgroundtasks.Runnable.RunnableFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -62,6 +63,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_drawer_3:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
                         new LooperFragment()).commit();
+                break;
+            case R.id.nav_drawer_4:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
+                        new HandlerFragment()).commit();
                 break;
 
         }
