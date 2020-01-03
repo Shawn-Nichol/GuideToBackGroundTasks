@@ -7,24 +7,12 @@
     tools:context=".Runnable.RunnableFragment">
 
     <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/frag_runnable_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/frag_runnable_btn"
+        android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Runnable"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,15 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="No Handler"
-        app:layout_constraintEnd_toStartOf="@+id/frag_runnable_btn_handler"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn" />
+        app:layout_constraintTop_toTopOf="@+id/frag_runnable_btn_runnable_one" />
 
     <Button
-        android:id="@+id/frag_runnable_btn_handler"
+        android:id="@+id/frag_runnable_btn_runnable_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -51,17 +38,17 @@
         android:text="Handler"
         app:layout_constraintEnd_toStartOf="@+id/frag_runnable_btn_handler1_stop"
         app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_no_handler"
-        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
     <Button
-        android:id="@+id/frag_runnable_btn_handler2"
+        android:id="@+id/frag_runnable_btn_runnable_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Handler 2"
-        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler"
-        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler"
-        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler" />
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_runnable_one"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_runnable_one"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_runnable_one" />
 
     <Button
         android:id="@+id/frag_runnable_btn_handler3"
@@ -69,20 +56,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Handler 3"
-        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_handler2"
-        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_handler2"
-        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_handler2" />
+        app:layout_constraintEnd_toEndOf="@+id/frag_runnable_btn_runnable_two"
+        app:layout_constraintStart_toStartOf="@+id/frag_runnable_btn_runnable_two"
+        app:layout_constraintTop_toBottomOf="@+id/frag_runnable_btn_runnable_two" />
 
     <Button
         android:id="@+id/frag_runnable_btn_handler1_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="54dp"
         android:layout_marginEnd="8dp"
         android:text="STOP 1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_handler"
-        app:layout_constraintTop_toTopOf="@+id/frag_runnable_btn_handler" />
+        app:layout_constraintStart_toEndOf="@+id/frag_runnable_btn_runnable_one"
+        app:layout_constraintTop_toTopOf="@+id/frag_runnable_btn_runnable_one" />
 
     <Button
         android:id="@+id/frag_runnable_btn_handler2_stop"

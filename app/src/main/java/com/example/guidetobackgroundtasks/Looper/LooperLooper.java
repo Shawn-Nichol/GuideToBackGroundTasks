@@ -14,13 +14,17 @@ public class LooperLooper extends Thread {
     @Override
     public void run() {
         Log.d(TAG, "run: ");
+
+        // Initializes the current thread as a looper.
         Looper.prepare();
 
+        // Returns the looper object associated with the current thread.
         looper = Looper.myLooper();
 
         handler = new LooperHandler();
 
-        Looper.loop(); // infinite loop
+        // Returns the message queue in this thread, creates an infinite loop.
+        Looper.loop();
 
         Log.d(TAG, "run: end of run()");
     }

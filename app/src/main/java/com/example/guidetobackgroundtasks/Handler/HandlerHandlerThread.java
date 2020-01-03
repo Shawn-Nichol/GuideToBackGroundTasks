@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 
 public class HandlerHandlerThread extends HandlerThread {
     private static final String TAG = "MyLogHandlerHandlerThread";
-    public static final int MY_TASK = 1;
+
+    public static final int TASK_ONE = 1;
+    public static final int  TASK_TWO = 2;
 
     private Handler handler;
 
@@ -28,13 +30,19 @@ public class HandlerHandlerThread extends HandlerThread {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 switch (msg.what) {
-                    case MY_TASK:
+                    case TASK_ONE:
                         Log.d(TAG, "handleMessage msg.arg1: " + msg.arg1 + ", Obj: " + msg.obj);
                         for(int i  = 0; i < 4; i++) {
                             Log.d(TAG, "handleMessage: " + i);
                             SystemClock.sleep(1000);
                         }
                         break;
+                    case TASK_TWO:
+                        Log.d(TAG, "handleMessage msg.arg1: " + msg.arg1 + ", Obj: " + msg.obj);
+                        for(int i  = 0; i < 8; i++) {
+                            Log.d(TAG, "handleMessage: " + i);
+                            SystemClock.sleep(1000);
+                        }
                 }
             }
         };

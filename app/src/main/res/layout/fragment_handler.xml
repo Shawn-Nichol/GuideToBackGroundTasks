@@ -8,24 +8,59 @@
 
 
     <Button
-        android:id="@+id/frag_handler_btn_do_work"
+        android:id="@+id/frag_handler_btn_remove_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Do Work"
+        android:text="Remove Work"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_handler_btn_runnable_one" />
+
+    <Button
+        android:id="@+id/frag_handler_btn_send_message_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Message One"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/frag_handler_btn_remove_message"
+        android:id="@+id/frag_handler_btn_send_empty_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Remove Work"
-        app:layout_constraintEnd_toEndOf="@+id/frag_handler_btn_do_work"
-        app:layout_constraintStart_toStartOf="@+id/frag_handler_btn_do_work"
-        app:layout_constraintTop_toBottomOf="@+id/frag_handler_btn_do_work" />
+        android:text="Message Two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_handler_btn_send_message_one" />
+
+    <Button
+        android:id="@+id/frag_handler_btn_runnable_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Runnable One"
+        app:layout_constraintEnd_toStartOf="@+id/frag_handler_btn_runnable_two"
+        app:layout_constraintHorizontal_bias="0.229"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_handler_btn_send_empty_message" />
+
+    <Button
+        android:id="@+id/frag_handler_btn_runnable_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Runnable Two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/frag_handler_btn_runnable_one"
+        app:layout_constraintTop_toBottomOf="@+id/frag_handler_btn_send_empty_message" />
 </androidx.constraintlayout.widget.ConstraintLayout>

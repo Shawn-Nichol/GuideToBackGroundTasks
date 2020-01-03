@@ -21,7 +21,6 @@ import static com.example.guidetobackgroundtasks.Looper.LooperHandler.TASK_B;
  * A simple {@link Fragment} subclass.
  */
 public class LooperFragment extends Fragment {
-    private static final String TAG = "MyLogLooperFragment";
 
     View v;
     Button btnStart;
@@ -35,19 +34,22 @@ public class LooperFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_looper, container, false);
 
         btnStart = v.findViewById(R.id.frag_looper_btn_start);
+
+        /**
+         * btnStart, creates a new thread.
+         */
         btnStart.setOnClickListener(view -> {
             looperThread.start();
         });
 
         btnStop = v.findViewById(R.id.frag_looper_btn_stop);
         btnStop.setOnClickListener(view -> {
-            looperThread.looper.quit();
+            looperThread.looper.quit(); // quites after the current message.
             // looperThread.handler.getLooper(); Alternative
         });
 
@@ -56,15 +58,6 @@ public class LooperFragment extends Fragment {
             Message msg = Message.obtain();
             msg.what = TASK_A;
             looperThread.handler.sendMessage(msg);
-
-            //            Handler threadHandler = new Handler(looperThread.looper);
-//
-//            threadHandler.post(() -> {
-//                for (int i = 0; i < 5; i++) {
-//                    Log.d(TAG, "run: " + i);
-//                    SystemClock.sleep(1000);
-//                }
-//            });
         });
 
         btnTaskB = v.findViewById(R.id.frag_looper_btn_task_b);
