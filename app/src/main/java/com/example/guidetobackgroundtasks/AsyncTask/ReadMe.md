@@ -5,7 +5,7 @@ and **Handler** and does not constitute a generic threading framework. **AsyncTa
 for short operation. , and 4 steps called **onPreExecute**, **doInBackground**, 
 **onProgressUpdate** and **onPostExecute**.
 
-
+0
 **AsyncTask** must be subclassed to be used and Override **doInBackground**. 
 
 **AsyncTask** is defined by computation that runs on a background thread and 

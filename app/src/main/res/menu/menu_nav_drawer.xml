@@ -24,5 +24,9 @@
         android:id="@+id/nav_drawer_7"
         android:title="AsyncTask"/>
 
+    <item
+        android:id="@+id/nav_drawer_8"
+        android:title="Intent-Service"/>
+
 
 </menu>
