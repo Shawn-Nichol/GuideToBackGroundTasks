@@ -10,10 +10,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.guidetobackgroundtasks.AsyncTask.AsyncTaskFragment;
 import com.example.guidetobackgroundtasks.ExampleThread.ExampleThreadingFragment;
 import com.example.guidetobackgroundtasks.Handler.HandlerFragment;
 import com.example.guidetobackgroundtasks.Looper.LooperFragment;
+import com.example.guidetobackgroundtasks.MultipleThreads.MultipleThreadsFragment;
 import com.example.guidetobackgroundtasks.Runnable.RunnableFragment;
+import com.example.guidetobackgroundtasks.ThreadPool.ThreadPoolFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
@@ -67,6 +70,18 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_drawer_4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
                         new HandlerFragment()).commit();
+                break;
+            case R.id.nav_drawer_5:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
+                        new MultipleThreadsFragment()).commit();
+                break;
+            case R.id.nav_drawer_6:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
+                        new ThreadPoolFragment()).commit();
+                break;
+            case R.id.nav_drawer_7:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
+                        new AsyncTaskFragment()).commit();
                 break;
 
         }
