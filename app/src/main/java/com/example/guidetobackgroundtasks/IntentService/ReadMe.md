@@ -15,7 +15,7 @@ you are better off using JobIntentService, which uses jobs instead of services w
     - Check App Build level
     - Create new NotificationChannel <br/>
     ```NotificationChannel myChannel = new NotificationChannel(ID, Name, NotificationManager.level)```
-    - C NotificationManager
+    - C NotificationManager \
         ```NotificationManager manager = getSystemService(NotificationManager.class)```
     - Add channel to NotificationManager.
     ```manager.createNotificationChannel(myChannel)```
