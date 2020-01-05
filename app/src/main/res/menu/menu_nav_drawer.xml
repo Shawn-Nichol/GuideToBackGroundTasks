@@ -28,5 +28,9 @@
         android:id="@+id/nav_drawer_8"
         android:title="Intent-Service"/>
 
+    <item
+        android:id="@+id/nav_drawer_9"
+        android:title="Job Scheduler"/>
+
 
 </menu>
