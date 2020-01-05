@@ -14,14 +14,11 @@ you are better off using JobIntentService, which uses jobs instead of services w
   - Create a new java class that extends **Application**.
     - Check App Build level
     - Create new NotificationChannel
-    
-      ```NotificationChannel myChannel = new NotificationChannel(ID, Name, NotificationManager.level)```
+    ```NotificationChannel myChannel = new NotificationChannel(ID, Name, NotificationManager.level)```
     - C NotificationManager
-    
-      ```NotificationManager manager = getSystemService(NotificationManager.class)```
+    ```NotificationManager manager = getSystemService(NotificationManager.class)```
     - Add channel to NotificationManager.
-    
-      ```manager.createNotificationChannel(myChannel)```
+    ```manager.createNotificationChannel(myChannel)```
 
 ### Intent-Service
   - Create a new java class that extends **IntentService**.
