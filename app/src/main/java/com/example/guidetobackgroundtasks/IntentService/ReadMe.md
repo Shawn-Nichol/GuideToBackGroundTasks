@@ -13,8 +13,8 @@ you are better off using JobIntentService, which uses jobs instead of services w
 ### Notification channel.
   - Create a new java class that extends **Application**.
     - Check App Build level
-    - Create new NotificationChannel
-            ```NotificationChannel myChannel = new NotificationChannel(ID, Name, NotificationManager.level)```
+    - Create new NotificationChannel <br/>
+    ```NotificationChannel myChannel = new NotificationChannel(ID, Name, NotificationManager.level)```
     - C NotificationManager
         ```NotificationManager manager = getSystemService(NotificationManager.class)```
     - Add channel to NotificationManager.
@@ -24,8 +24,8 @@ you are better off using JobIntentService, which uses jobs instead of services w
   - Create a new java class that extends **IntentService**.
     - Add a Constructor
       - add **super**
-        ```
-        supper(className)
+             
+        super(className)
         ```
       - what todo when the phone turns off and the service is still running.
         ```setIntentRedelivery(true)```
