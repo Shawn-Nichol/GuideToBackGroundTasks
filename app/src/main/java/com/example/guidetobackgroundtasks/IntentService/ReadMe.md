@@ -30,16 +30,20 @@ you are better off using JobIntentService, which uses jobs instead of services w
     - **Override onHandleIntent**
       - code you want to run goes here
     - **Override onCreate**
-      - Allow the service to run if the phone is turned off <br/>
-        ```PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+      - Allow the service to run if the phone is turned off
+        ```
+        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
            wakeLock = powerManager.newWakeLock(PowerManager.Partial_WAKE_LOCK, "MY:wakeLock")
-           wakeLock.acquire()```
-      - **Create Notification** <br/>
-        ```Notification notification = NotificationCompat.Builder(this, CHANNEL_ID)
+           wakeLock.acquire()
+           ```
+      - **Create Notification**
+        ```
+        Notification notification = NotificationCompat.Builder(this, CHANNEL_ID)
               .setContentTitle("My title")
               .setContentText("My Text")
               .setSmallIcon(R.drawable.my_icon)
-              .build()```
+              .build()
+         ```
       -run service in ForeGround. <br/>
         ```startForeGround(1, notification)```
     - **Override onDestroy** <br/>
@@ -48,8 +52,10 @@ you are better off using JobIntentService, which uses jobs instead of services w
  
 ### **Manifest.xml**
    - Grant permission to wakeLock and ForeGround service. <br/>
-     ```<uses-permission android:name="android.permission.WAKE_LOCK"/>``` <br/>
-     ```<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />```
+     ```
+     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+     ```
    - add Service tag in application <br/>
      ```<service android:name="MyIntentService"/>```
     
