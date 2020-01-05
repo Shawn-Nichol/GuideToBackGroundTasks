@@ -46,8 +46,8 @@ you are better off using JobIntentService, which uses jobs instead of services w
          ```
       -run service in ForeGround. <br/>
         ```startForeGround(1, notification)```
-    - **Override onDestroy** <br/>
-      - Turn off wakeLock
+    - **Override onDestroy** 
+      - Turn off wakeLock <br/>
         ```wakeLock.Release```
  
 ### **Manifest.xml**
