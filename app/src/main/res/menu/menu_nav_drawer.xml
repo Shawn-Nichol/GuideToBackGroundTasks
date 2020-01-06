@@ -32,5 +32,9 @@
         android:id="@+id/nav_drawer_9"
         android:title="Job Scheduler"/>
 
+    <item
+        android:id="@+id/nav_drawer_10"
+        android:title="Work Manager"/>
+
 
 </menu>

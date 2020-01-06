@@ -20,7 +20,7 @@ met.
 
 ## Foreground services
 For user-initiated work that need to run immediately and must execute to completion. Foreground service
-tells the system that the app is doing somethign important and it shouldn't be killed. Foreground
+tells the system that the app is doing something important and it shouldn't be killed. Foreground
 services are visible to users via a non-dismissible notification in the Notification tray.
 
 ## AlarmManager

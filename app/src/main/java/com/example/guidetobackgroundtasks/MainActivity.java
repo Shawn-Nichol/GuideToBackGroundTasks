@@ -19,6 +19,7 @@ import com.example.guidetobackgroundtasks.Looper.LooperFragment;
 import com.example.guidetobackgroundtasks.MultipleThreads.MultipleThreadsFragment;
 import com.example.guidetobackgroundtasks.Runnable.RunnableFragment;
 import com.example.guidetobackgroundtasks.ThreadPool.ThreadPoolFragment;
+import com.example.guidetobackgroundtasks.WorkManager.WorkManagerFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
@@ -92,6 +93,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_drawer_9:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
                         new JobSchedulerFragment()).commit();
+                break;
+            case R.id.nav_drawer_10:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
+                        new WorkManagerFragment()).commit();
                 break;
 
         }

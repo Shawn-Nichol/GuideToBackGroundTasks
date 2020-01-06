@@ -47,7 +47,12 @@ of the job.
     ```JobScheduler scheduler = (JobScheduler) getActivity.getSystemSerivce(JOB_SCHEDULER_SERVICE);```
     - Cancel job. </br>
     ```scheudler.cancel(id of service)``` 
-    
+- **AndroidManifest.xml**
+    - Add service with permission **BIND_JOB_SERVICE**. </br>
+    ```
+    <service android:name=".MyJobService"
+        android:permission="android.permission.BIND_JOB_SERVICE"/>
+                ```
     
     
     
