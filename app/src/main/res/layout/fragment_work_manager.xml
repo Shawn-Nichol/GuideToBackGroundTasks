@@ -7,26 +7,17 @@
     tools:context=".WorkManager.WorkManagerFragment">
 
     <Button
-        android:id="@+id/frag_work_manager_btn_once"
+        android:id="@+id/frag_work_manager_btn_single"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Work Once"
+        android:text="Single"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/frag_work_manager_btn_repeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Worker Repeated"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frag_work_manager_btn_once" />
 
     <ProgressBar
         android:id="@+id/frag_work_manager_progressbar"
@@ -42,6 +33,36 @@
         tools:layout_editor_absoluteX="40dp"
         tools:visibility="visible" />
 
+
+    <Button
+        android:id="@+id/frag_work_manager_btn_chain_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Chain Work"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_work_manager_btn_single" />
+
+    <Button
+        android:id="@+id/frag_work_manager_btn_chain_at_once"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Work At Once"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_work_manager_btn_chain_work" />
+
+    <Button
+        android:id="@+id/frag_work_manager_btn_chain_combine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Combine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_work_manager_btn_chain_at_once" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
