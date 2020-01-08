@@ -35,10 +35,15 @@ public class WorkManagerFragment extends Fragment {
     OneTimeWorkRequest workRequestTwo;
     OneTimeWorkRequest workRequestThree;
 
-    Button btnOnce;
+    Button btnSingle;
     Button btnChain;
     Button btnAtOnce;
     Button btnCombine;
+    Button btnCancelSingle;
+    Button btnCancelChain;
+    Button btnCancelAtOnce;
+    Button btnCancelWorkRequest;
+
 
     ProgressBar pb;
     Constraints constraints;
@@ -94,9 +99,9 @@ public class WorkManagerFragment extends Fragment {
 
     private void loadWorkRequest() {
 
-        workRequestSingle = new OneTimeWorkRequest.Builder(MyWorker.class)
+        workRequestSingle = new OneTimeWorkRequest.Builder(SingleWorker.class)
                 .setConstraints(constraints)
-                .addTag("MyWorker")
+                .addTag("SingleWorker")
                 .build();
 
         workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
@@ -117,8 +122,8 @@ public class WorkManagerFragment extends Fragment {
     }
 
     private void loadSingleWorkRequest(){
-        btnOnce = v.findViewById(R.id.frag_work_manager_btn_single);
-        btnOnce.setOnClickListener(view -> {
+        btnSingle = v.findViewById(R.id.frag_work_manager_btn_single);
+        btnSingle.setOnClickListener(view -> {
             Log.d(TAG, "onCreateView: btnStart");
 
 
@@ -126,6 +131,12 @@ public class WorkManagerFragment extends Fragment {
 
             // Once the work request is defined you can now schedule it with the WorkManager using enqueue().
             WorkManager.getInstance(getActivity()).enqueue(workRequestSingle);
+        });
+
+        btnCancelSingle = v.findViewById(R.id.frag_work_manager_btn_cancel_single);
+        btnCancelSingle.setOnClickListener(view -> {
+            Log.d(TAG, "loadSingleWorkRequest: BtnCancelled");
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestSingle.getId());
         });
     }
 
