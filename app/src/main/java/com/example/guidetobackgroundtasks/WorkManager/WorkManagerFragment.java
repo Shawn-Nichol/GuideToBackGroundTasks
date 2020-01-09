@@ -8,6 +8,7 @@ import androidx.work.ArrayCreatingInputMerger;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkContinuation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -21,7 +22,9 @@ import android.widget.ProgressBar;
 
 import com.example.guidetobackgroundtasks.R;
 
+import java.time.Period;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +37,8 @@ public class WorkManagerFragment extends Fragment {
     OneTimeWorkRequest workRequestOne;
     OneTimeWorkRequest workRequestTwo;
     OneTimeWorkRequest workRequestThree;
+    PeriodicWorkRequest periodicWorkRequest;
+
 
     Button btnSingle;
     Button btnChain;
@@ -43,6 +48,7 @@ public class WorkManagerFragment extends Fragment {
     Button btnCancelChain;
     Button btnCancelAtOnce;
     Button btnCancelWorkRequest;
+    Button btnRecurringSingle;
 
 
     ProgressBar pb;
@@ -67,6 +73,7 @@ public class WorkManagerFragment extends Fragment {
         loadChainWork();
         loadAtOnce();
         loadCombine();
+        loadRecurring();
 
         loadWorkStates();
 
@@ -119,6 +126,11 @@ public class WorkManagerFragment extends Fragment {
                 .addTag("Worker Three")
                 .setInputMerger(ArrayCreatingInputMerger.class)
                 .build();
+
+        periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWork.class, 3, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
     }
 
     private void loadSingleWorkRequest(){
@@ -138,6 +150,8 @@ public class WorkManagerFragment extends Fragment {
             Log.d(TAG, "loadSingleWorkRequest: BtnCancelled");
             WorkManager.getInstance(getActivity()).cancelWorkById(workRequestSingle.getId());
         });
+
+
     }
 
     private void loadChainWork() {
@@ -181,6 +195,13 @@ public class WorkManagerFragment extends Fragment {
         });
     }
 
+    private void loadRecurring() {
+        btnRecurringSingle = v.findViewById(R.id.frag_work_manager_btn_recuring_single);
+        btnRecurringSingle.setOnClickListener(view ->{
+            WorkManager.getInstance(getActivity())
+                    .enqueue(periodicWorkRequest);
+        });
+    }
 
 
 }
