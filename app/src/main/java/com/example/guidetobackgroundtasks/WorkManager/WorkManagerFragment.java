@@ -68,8 +68,6 @@ public class WorkManagerFragment extends Fragment {
         pb = v.findViewById(R.id.frag_work_manager_progressbar);
 
         loadConstraints();
-
-
         loadChainWork();
         loadAtOnce();
         loadCombine();
@@ -80,12 +78,8 @@ public class WorkManagerFragment extends Fragment {
         loadWorkerThree();
         loadCancelAll();
 
-
-
         return v;
     }
-
-
 
     private void loadConstraints() {
         constraints = new Constraints.Builder()
