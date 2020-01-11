@@ -32,18 +32,11 @@ public class WorkManagerFragment extends Fragment {
     private static final String TAG = "MyLogWorkManagerFragment";
 
     View v;
-    OneTimeWorkRequest workRequestSingle;
-    OneTimeWorkRequest workRequestOne;
-    OneTimeWorkRequest workRequestTwo;
-    OneTimeWorkRequest workRequestThree;
-    PeriodicWorkRequest periodicWorkRequest;
 
-
-    Button btnSingle;
     Button btnChain;
     Button btnAtOnce;
     Button btnCombine;
-    Button btnCancelSingle;
+
     Button btnCancelChain;
     Button btnCancelAtOnce;
     Button btnCancelWorkRequest;
@@ -61,6 +54,8 @@ public class WorkManagerFragment extends Fragment {
     ProgressBar pb;
     Constraints constraints;
 
+    private int counter = 0;
+
     public WorkManagerFragment() {
         // Required empty public constructor
     }
@@ -73,9 +68,7 @@ public class WorkManagerFragment extends Fragment {
         pb = v.findViewById(R.id.frag_work_manager_progressbar);
 
         loadConstraints();
-        loadWorkRequest();
 
-        loadSingleWorkRequest();
 
         loadChainWork();
         loadAtOnce();
@@ -93,20 +86,20 @@ public class WorkManagerFragment extends Fragment {
     }
 
     private void loadWorkStates() {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestSingle.getId())
-                .observe(getActivity(), workInfo -> {
-                if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                    Log.d(TAG, "onChanged: work finished");
-                    pb.setVisibility(View.INVISIBLE);
-                    }
-                });
+//        WorkManager.getInstance(getActivity()).getWorkInfosByTagLiveData("Worker C")
+//                .observe(getActivity(), workInfo -> {
+//                if (workInfo. == WorkInfo.State.SUCCEEDED) {
+//                    Log.d(TAG, "onChanged: work finished");
+//                    pb.setVisibility(View.INVISIBLE);
+//                    }
+//                });
 
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
-                .observe(getActivity(), workInfo -> {
-                    if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                        pb.setVisibility(View.INVISIBLE);
-                    }
-                });
+//        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
+//                .observe(getActivity(), workInfo -> {
+//                    if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+//                        pb.setVisibility(View.INVISIBLE);
+//                    }
+//                });
 
     }
 
@@ -115,62 +108,29 @@ public class WorkManagerFragment extends Fragment {
                 .build();
     }
 
-    private void loadWorkRequest() {
-
-        workRequestSingle = new OneTimeWorkRequest.Builder(SingleWorker.class)
-                .setConstraints(constraints)
-                .addTag("SingleWorker")
-                .build();
-
-        workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                .setConstraints(constraints)
-                .addTag("Worker One")
-                .build();
-
-        workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
-                .setConstraints(constraints)
-                .addTag("Worker Two")
-                .build();
-
-        workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
-                .setConstraints(constraints)
-                .addTag("Worker Three")
-//                .setInputMerger(ArrayCreatingInputMerger.class)
-                .build();
-
-        periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWork.class, 3, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-
-    }
-
-    private void loadSingleWorkRequest(){
-        btnSingle = v.findViewById(R.id.frag_work_manager_btn_single);
-        btnSingle.setOnClickListener(view -> {
-            Log.d(TAG, "onCreateView: btnStart");
-
-
-            pb.setVisibility(View.VISIBLE);
-
-            // Once the work request is defined you can now schedule it with the WorkManager using enqueue().
-            WorkManager.getInstance(getActivity()).enqueue(workRequestSingle);
-        });
-
-        btnCancelSingle = v.findViewById(R.id.frag_work_manager_btn_cancel_single);
-        btnCancelSingle.setOnClickListener(view -> {
-            Log.d(TAG, "loadSingleWorkRequest: BtnCancelled");
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestSingle.getId());
-        });
-
-
-    }
-
     private void loadChainWork() {
 
         btnChain = v.findViewById(R.id.frag_work_manager_btn_chain_work);
         btnChain.setOnClickListener(view -> {
             Log.d(TAG, "loadChainWork: btnPressed");
             pb.setVisibility(View.VISIBLE);
+
+            OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
+                    .setConstraints(constraints)
+                    .addTag("Worker One")
+                    .addTag("Chain")
+                    .build();
+
+            OneTimeWorkRequest workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
+                    .addTag("Worker Two")
+                    .addTag("Chain")
+                    .build();
+
+            OneTimeWorkRequest workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
+                    .addTag("Worker Three")
+                    .addTag("Chain")
+                    .build();
+
             WorkContinuation continuation = WorkManager.getInstance(getActivity()).beginWith(workRequestOne);
 
             continuation.then(workRequestTwo)
@@ -181,9 +141,7 @@ public class WorkManagerFragment extends Fragment {
         btnCancelChain = v.findViewById(R.id.frag_work_manager_btn_cancel_chain_work);
         btnCancelChain.setOnClickListener(view -> {
             Log.d(TAG, "loadChainWork: btnCancel");
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestOne.getId());
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestTwo.getId());
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestThree.getId());
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("Chain");
         });
 
     }
@@ -194,10 +152,30 @@ public class WorkManagerFragment extends Fragment {
             Log.d(TAG, "loadAtOnce: btnPressed");
             pb.setVisibility(View.VISIBLE);
 
+            OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
+                    .setConstraints(constraints)
+                    .addTag("loadAtOnce")
+                    .build();
+
+            OneTimeWorkRequest workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
+                    .setConstraints(constraints)
+                    .addTag("loadAtOnce")
+                    .build();
+
+            OneTimeWorkRequest workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
+                    .setConstraints(constraints)
+                    .addTag("loadAtOnce")
+                    .build();
+
             WorkManager.getInstance(getActivity())
                     // Runs in parallel
                     .beginWith(Arrays.asList(workRequestOne, workRequestTwo, workRequestThree))
                     .enqueue();
+        });
+
+        btnCancelAtOnce = v.findViewById(R.id.frag_work_manager_btn_cancel_work_at_once);
+        btnCancelAtOnce.setOnClickListener(view -> {
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("loadAtOnce");
         });
     }
 
@@ -206,6 +184,22 @@ public class WorkManagerFragment extends Fragment {
         btnCombine.setOnClickListener(view -> {
             pb.setVisibility(View.VISIBLE);
             Log.d(TAG, "loadCombine: btnPressed");
+
+            OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
+                    .setConstraints(constraints)
+                    .addTag("Combine")
+                    .build();
+
+            OneTimeWorkRequest workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
+                    .setConstraints(constraints)
+                    .addTag("Combine")
+                    .build();
+
+            OneTimeWorkRequest workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
+                    .setConstraints(constraints)
+                    .addTag("Combine")
+                    .build();
+
             WorkManager.getInstance(getActivity())
                     // Runs in parallel
                     .beginWith(Arrays.asList(workRequestOne, workRequestTwo))
@@ -217,17 +211,28 @@ public class WorkManagerFragment extends Fragment {
     private void loadRecurring() {
         btnRecurringSingle = v.findViewById(R.id.frag_work_manager_btn_recurring_single);
         btnRecurringSingle.setOnClickListener(view ->{
-            WorkManager.getInstance(getActivity())
-                    .enqueue(periodicWorkRequest);
+            PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(MyPeriodicWork.class, 3, TimeUnit.MINUTES)
+                    .setConstraints(constraints)
+                    .addTag("Worker Periodic")
+                    .build();
+
+            WorkManager.getInstance(getActivity()).enqueue(workRequest);
         });
+
     }
 
     private void loadUnique() {
 
         btnUnique = v.findViewById(R.id.frag_work_manager_btn_unique_work);
         btnUnique.setOnClickListener(view -> {
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
+                    .setConstraints(constraints)
+                    .addTag("Worker Unique")
+                    .build();
+
             WorkManager.getInstance(getActivity())
-                    .enqueueUniqueWork("myUnique work", ExistingWorkPolicy.REPLACE, workRequestOne);
+                    .enqueueUniqueWork("myUnique work", ExistingWorkPolicy.REPLACE, workRequest);
         });
     }
 
@@ -235,13 +240,31 @@ public class WorkManagerFragment extends Fragment {
         btnWorkerOne = v.findViewById(R.id.frag_work_manager_btn_worker_one);
         btnWorkerOne.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerOne: BtnPressed");
-            WorkManager.getInstance(getActivity()).enqueue(workRequestOne);
+            pb.setVisibility(View.VISIBLE);
+            counter += 1;
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
+                    .setConstraints(constraints)
+                    .addTag("Worker A")
+                    .addTag("ALL")
+                    .build();
+
+            WorkManager.getInstance(getActivity()).enqueue(workRequest);
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequest.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadWorkerOne: workerOne succeeded");
+                            displayLoading();
+                        }
+                    });
         });
 
         btnCancelOne = v.findViewById(R.id.frag_work_manager_btn_cancel_one);
         btnCancelOne.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerOne: btnCancel");
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestOne.getId());
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("Worker A");
+            displayLoading();
         });
     }
 
@@ -249,27 +272,65 @@ public class WorkManagerFragment extends Fragment {
         btnWorkerTwo = v.findViewById(R.id.frag_work_manager_btn_worker_two);
         btnWorkerTwo.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerTwo: BtnPressed");
-            WorkManager.getInstance(getActivity()).enqueue(workRequestTwo);
+            pb.setVisibility(View.VISIBLE);
+            counter += 1;
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
+                    .setConstraints(constraints)
+                    .addTag("Worker B")
+                    .addTag("ALL")
+                    .build();
+
+
+            WorkManager.getInstance(getActivity()).enqueue(workRequest);
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequest.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadWorkerTwo: work succeeded");
+                            displayLoading();
+                        }
+                    });
         });
 
         btnCancelTwo = v.findViewById(R.id.frag_work_manager_btn_cancel_two);
         btnCancelTwo.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerTwo: BtnCancel");
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestTwo.getId());
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("Worker B");
+            displayLoading();
         });
+
     }
 
     private void loadWorkerThree() {
         btnWorkerThree = v.findViewById(R.id.frag_work_manager_btn_worker_three);
         btnWorkerThree.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerThree: BtnPressed");
-            WorkManager.getInstance(getActivity()).enqueue(workRequestThree);
+            pb.setVisibility(View.VISIBLE);
+            counter += 1;
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
+                    .setConstraints(constraints)
+                    .addTag("Worker C")
+                    .addTag("ALL")
+                    .build();
+
+            WorkManager.getInstance(getActivity()).enqueue(workRequest);
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequest.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadWorkerThree: workerThree succeeded");
+                            displayLoading();
+                        }
+                    });
         });
 
         btnCancelThree = v.findViewById(R.id.frag_work_manager_btn_cancel_three);
         btnCancelThree.setOnClickListener(view -> {
             Log.d(TAG, "loadWorkerThree: btnCanceled");
-            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestThree.getId());
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("Worker C");
+            displayLoading();
         });
     }
 
@@ -277,7 +338,17 @@ public class WorkManagerFragment extends Fragment {
         btnCancelAll = v.findViewById(R.id.frag_work_manager_btn_cancel_all);
         btnCancelAll.setOnClickListener(view -> {
             Log.d(TAG, "loadCancelAll: btnPressed");
-            WorkManager.getInstance(getActivity()).cancelAllWork();
+            WorkManager.getInstance(getActivity()).cancelAllWorkByTag("ALL");
+            pb.setVisibility(View.INVISIBLE);
+            counter = 0;
         });
+    }
+
+    private void displayLoading() {
+        counter -= 1;
+        Log.d(TAG, "displayLoading: counter = " + counter);
+        if(counter == 0) {
+            pb.setVisibility(View.INVISIBLE);
+        }
     }
 }
