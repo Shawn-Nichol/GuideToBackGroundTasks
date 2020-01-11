@@ -80,28 +80,12 @@ public class WorkManagerFragment extends Fragment {
         loadWorkerThree();
         loadCancelAll();
 
-        loadWorkStates();
+
 
         return v;
     }
 
-    private void loadWorkStates() {
-//        WorkManager.getInstance(getActivity()).getWorkInfosByTagLiveData("Worker C")
-//                .observe(getActivity(), workInfo -> {
-//                if (workInfo. == WorkInfo.State.SUCCEEDED) {
-//                    Log.d(TAG, "onChanged: work finished");
-//                    pb.setVisibility(View.INVISIBLE);
-//                    }
-//                });
 
-//        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
-//                .observe(getActivity(), workInfo -> {
-//                    if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-//                        pb.setVisibility(View.INVISIBLE);
-//                    }
-//                });
-
-    }
 
     private void loadConstraints() {
         constraints = new Constraints.Builder()
@@ -114,6 +98,7 @@ public class WorkManagerFragment extends Fragment {
         btnChain.setOnClickListener(view -> {
             Log.d(TAG, "loadChainWork: btnPressed");
             pb.setVisibility(View.VISIBLE);
+            counter += 1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
                     .setConstraints(constraints)
@@ -136,12 +121,22 @@ public class WorkManagerFragment extends Fragment {
             continuation.then(workRequestTwo)
                     .then(workRequestThree)
                     .enqueue();
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadChainWork: workRequest completed");
+                            displayLoading();
+                        }
+                    });
+
         });
 
         btnCancelChain = v.findViewById(R.id.frag_work_manager_btn_cancel_chain_work);
         btnCancelChain.setOnClickListener(view -> {
             Log.d(TAG, "loadChainWork: btnCancel");
             WorkManager.getInstance(getActivity()).cancelAllWorkByTag("Chain");
+            displayLoading();
         });
 
     }
@@ -151,6 +146,7 @@ public class WorkManagerFragment extends Fragment {
         btnAtOnce.setOnClickListener(view -> {
             Log.d(TAG, "loadAtOnce: btnPressed");
             pb.setVisibility(View.VISIBLE);
+            counter += 1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
                     .setConstraints(constraints)
@@ -171,19 +167,29 @@ public class WorkManagerFragment extends Fragment {
                     // Runs in parallel
                     .beginWith(Arrays.asList(workRequestOne, workRequestTwo, workRequestThree))
                     .enqueue();
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadAtOnce: workRequest finished");
+                            displayLoading();
+                        }
+                    });
         });
 
         btnCancelAtOnce = v.findViewById(R.id.frag_work_manager_btn_cancel_work_at_once);
         btnCancelAtOnce.setOnClickListener(view -> {
             WorkManager.getInstance(getActivity()).cancelAllWorkByTag("loadAtOnce");
+            displayLoading();
         });
     }
 
     private void loadCombine() {
         btnCombine = v.findViewById(R.id.frag_work_manager_btn_chain_combine);
         btnCombine.setOnClickListener(view -> {
-            pb.setVisibility(View.VISIBLE);
             Log.d(TAG, "loadCombine: btnPressed");
+            pb.setVisibility(View.VISIBLE);
+            counter +=1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
                     .setConstraints(constraints)
@@ -205,6 +211,13 @@ public class WorkManagerFragment extends Fragment {
                     .beginWith(Arrays.asList(workRequestOne, workRequestTwo))
                     .then(workRequestThree)
                     .enqueue();
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequestThree.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Log.d(TAG, "loadCombine: workRequest finished");
+                            displayLoading();
+                        }
+                    });
         });
     }
 
