@@ -4,8 +4,9 @@ package com.example.guidetobackgroundtasks.WorkManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.work.ArrayCreatingInputMerger;
 import androidx.work.Constraints;
+
+import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
@@ -24,6 +25,12 @@ import com.example.guidetobackgroundtasks.R;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+
+import static com.example.guidetobackgroundtasks.WorkManager.MyWorkerWithParameters.KEY_RESULT;
+import static com.example.guidetobackgroundtasks.WorkManager.MyWorkerWithParameters.KEY_X_ARG;
+import static com.example.guidetobackgroundtasks.WorkManager.MyWorkerWithParameters.KEY_Y_ARG;
+import static com.example.guidetobackgroundtasks.WorkManager.MyWorkerWithParameters.KEY_Z_ARG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +59,7 @@ public class WorkManagerFragment extends Fragment {
 
 
     ProgressBar pb;
-    Constraints constraints;
+    Constraints myConstraints;
 
     private int counter = 0;
 
@@ -73,16 +80,18 @@ public class WorkManagerFragment extends Fragment {
         loadCombine();
         loadRecurring();
         loadUnique();
+        loadWorkerParameter();
         loadWorkerOne();
         loadWorkerTwo();
         loadWorkerThree();
         loadCancelAll();
 
+
         return v;
     }
 
     private void loadConstraints() {
-        constraints = new Constraints.Builder()
+        myConstraints = new Constraints.Builder()
                 .build();
     }
 
@@ -95,7 +104,7 @@ public class WorkManagerFragment extends Fragment {
             counter += 1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker One")
                     .addTag("Chain")
                     .build();
@@ -143,17 +152,17 @@ public class WorkManagerFragment extends Fragment {
             counter += 1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("loadAtOnce")
                     .build();
 
             OneTimeWorkRequest workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("loadAtOnce")
                     .build();
 
             OneTimeWorkRequest workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("loadAtOnce")
                     .build();
 
@@ -186,17 +195,17 @@ public class WorkManagerFragment extends Fragment {
             counter +=1;
 
             OneTimeWorkRequest workRequestOne = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Combine")
                     .build();
 
             OneTimeWorkRequest workRequestTwo = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Combine")
                     .build();
 
             OneTimeWorkRequest workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Combine")
                     .build();
 
@@ -219,7 +228,7 @@ public class WorkManagerFragment extends Fragment {
         btnRecurringSingle = v.findViewById(R.id.frag_work_manager_btn_recurring_single);
         btnRecurringSingle.setOnClickListener(view ->{
             PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(MyPeriodicWork.class, 3, TimeUnit.MINUTES)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker Periodic")
                     .build();
 
@@ -234,12 +243,39 @@ public class WorkManagerFragment extends Fragment {
         btnUnique.setOnClickListener(view -> {
 
             OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker Unique")
                     .build();
 
             WorkManager.getInstance(getActivity())
                     .enqueueUniqueWork("myUnique work", ExistingWorkPolicy.REPLACE, workRequest);
+        });
+    }
+
+    private void loadWorkerParameter() {
+        Button btn = v.findViewById(R.id.frag_work_manager_btn_parameters);
+        btn.setOnClickListener(view -> {
+            Data myData = new Data.Builder()
+                    .putInt(KEY_X_ARG, 1)
+                    .putInt(KEY_Y_ARG, 2)
+                    .putInt(KEY_Z_ARG, 3)
+                    .build();
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerWithParameters.class)
+                    .setConstraints(myConstraints)
+                    .addTag("Worker with Parameters")
+                    .setInputData(myData)
+                    .build();
+
+            WorkManager.getInstance(getActivity()).enqueue(workRequest);
+
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(workRequest.getId())
+                    .observe(getActivity(), workInfo -> {
+                        if(workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            int myResult = workInfo.getOutputData().getInt(KEY_RESULT, 0);
+                            Log.d(TAG, "loadWorkerParameter: work completed, value = " + myResult);
+                        }
+                    });
         });
     }
 
@@ -251,7 +287,7 @@ public class WorkManagerFragment extends Fragment {
             counter += 1;
 
             OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerOne.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker A")
                     .addTag("ALL")
                     .build();
@@ -283,7 +319,7 @@ public class WorkManagerFragment extends Fragment {
             counter += 1;
 
             OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerTwo.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker B")
                     .addTag("ALL")
                     .build();
@@ -317,7 +353,7 @@ public class WorkManagerFragment extends Fragment {
             counter += 1;
 
             OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
-                    .setConstraints(constraints)
+                    .setConstraints(myConstraints)
                     .addTag("Worker C")
                     .addTag("ALL")
                     .build();

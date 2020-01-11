@@ -197,5 +197,15 @@
         app:layout_constraintEnd_toEndOf="@+id/frag_work_manager_btn_cancel_one"
         app:layout_constraintStart_toStartOf="@+id/frag_work_manager_btn_cancel_one" />
 
+    <Button
+        android:id="@+id/frag_work_manager_btn_parameters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Pass Parameters"
+        app:layout_constraintBottom_toTopOf="@+id/frag_work_manager_btn_worker_one"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

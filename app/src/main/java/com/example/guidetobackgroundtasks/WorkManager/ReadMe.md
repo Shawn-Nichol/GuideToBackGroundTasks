@@ -37,6 +37,41 @@ OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorker.class)
     .build();
 ```
 
+## WorkerClass
+WorkerClass is the where the background work is done in WorkManager. It doesn't run or have communication
+with the UI thread.
+
+### Create WorkerClass
+- Gradle, add dependencies.
+  - implementation "androidx.work:work-runtime:$work_version"
+
+- Worker
+- Create Java class extend Worker
+  - Add Constructor (Context, WorkerParameters)
+  - Override doWork(), required
+  - Override onStopped
+  
+```
+public class MyWorker extends Worker {
+        
+        public MyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+            super(context, workerParams);
+        }
+        
+        @NonNull
+        @Override
+        public Result doWork() {
+            // Run background code here
+        }
+        
+        @Override
+        public void onStopped() {
+            super.onStopped();
+            // Run code if background task was cancleded.
+        }
+}
+```
+
 ## PeriodicWorkRequest
 A WorkRequest for repeating work. This work executes multiple times unit it is cancelled, first execution
 will happen as soon as the constraints are met. The next execution will happen after the time interval
@@ -105,3 +140,70 @@ be called
 ```
 WorkManager.getInstance(getActivity()).cancelWorkById(workRequest.getId());
 ```
+
+## Passing Parameters
+You can pass parameters to your WorkRequest and have the request return results. Passed and returned
+values are key-value pairs. To pass data call ".setInputData(myData)" method in the WorkRequest.Builder.
+The Worker class can access those parameters by calling "Worker.getInputData()". Include the dataResult
+in the return statement, dataResults can be accessed by observing the WorkInfo.
+
+- Data: A Persistable set of key/value pairs which are used as input and outputs. 
+
+### Worker pull Data
+- Worker, see WorkerClass for details on building WorkerClass
+  - Define Parameter Keys
+  - doWork()
+    - Get parameters.
+    - Create Data object to 
+    - Return results with data object
+```
+public class MyWorker extends Worker {
+    public static final String KEY_X_ARG = "x";
+    public static final String KEY_RESULT = "result";
+    
+    @Override
+    public Result doWork() {
+        int x = getIntputdat().getInt(KEY_X_ARG, 0);
+        
+        int multiple = x * 2;
+        
+        Data dataResults = new Data.Builder()
+            put.Int(KEY_RESULT, result)
+            .build()
+        
+        return Result.success(dataResult);
+    }
+    
+}
+```
+
+### Worker send data
+Inside a button.
+- Create data
+- Create WorkRequest
+  - setInputData
+- Enqueue work
+```
+Data myData = new Data.Builder()
+    .putInt(KEY_X_ARG, 2)
+    .build();
+    
+OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorker)
+    .setInputData(myData)
+    .build();
+
+Workmanger.getInstance(getActivity()).enqueue(workRequest);
+```
+
+### Receive the result from the workRequest
+- WorkManager getWorkInfoByIdLiveData(WorkerClass.getInfo)
+- check to see if work completed successfully
+  - get data with key value pair.
+```
+WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(myWorker.getId())
+    .observe(getActivity, workinfo -> {
+        if(workinfo.getState == WorkInfo.State.SUCCEEDED) {
+            int myResult = workinfo.getOutputData().getInt(KEY_RESULT, defaultValue);
+        }
+    }
+``` 
