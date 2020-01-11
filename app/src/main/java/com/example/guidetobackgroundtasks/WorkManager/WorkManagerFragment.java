@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.work.ArrayCreatingInputMerger;
 import androidx.work.Constraints;
-import androidx.work.NetworkType;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkContinuation;
@@ -22,7 +22,6 @@ import android.widget.ProgressBar;
 
 import com.example.guidetobackgroundtasks.R;
 
-import java.time.Period;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +48,14 @@ public class WorkManagerFragment extends Fragment {
     Button btnCancelAtOnce;
     Button btnCancelWorkRequest;
     Button btnRecurringSingle;
+    Button btnUnique;
+    Button btnWorkerOne;
+    Button btnWorkerTwo;
+    Button btnWorkerThree;
+    Button btnCancelOne;
+    Button btnCancelTwo;
+    Button btnCancelThree;
+    Button btnCancelAll;
 
 
     ProgressBar pb;
@@ -74,6 +81,11 @@ public class WorkManagerFragment extends Fragment {
         loadAtOnce();
         loadCombine();
         loadRecurring();
+        loadUnique();
+        loadWorkerOne();
+        loadWorkerTwo();
+        loadWorkerThree();
+        loadCancelAll();
 
         loadWorkStates();
 
@@ -100,7 +112,6 @@ public class WorkManagerFragment extends Fragment {
 
     private void loadConstraints() {
         constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build();
     }
 
@@ -124,7 +135,7 @@ public class WorkManagerFragment extends Fragment {
         workRequestThree = new OneTimeWorkRequest.Builder(MyWorkerThree.class)
                 .setConstraints(constraints)
                 .addTag("Worker Three")
-                .setInputMerger(ArrayCreatingInputMerger.class)
+//                .setInputMerger(ArrayCreatingInputMerger.class)
                 .build();
 
         periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWork.class, 3, TimeUnit.MINUTES)
@@ -167,6 +178,14 @@ public class WorkManagerFragment extends Fragment {
                     .enqueue();
         });
 
+        btnCancelChain = v.findViewById(R.id.frag_work_manager_btn_cancel_chain_work);
+        btnCancelChain.setOnClickListener(view -> {
+            Log.d(TAG, "loadChainWork: btnCancel");
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestOne.getId());
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestTwo.getId());
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestThree.getId());
+        });
+
     }
 
     private void loadAtOnce() {
@@ -196,12 +215,69 @@ public class WorkManagerFragment extends Fragment {
     }
 
     private void loadRecurring() {
-        btnRecurringSingle = v.findViewById(R.id.frag_work_manager_btn_recuring_single);
+        btnRecurringSingle = v.findViewById(R.id.frag_work_manager_btn_recurring_single);
         btnRecurringSingle.setOnClickListener(view ->{
             WorkManager.getInstance(getActivity())
                     .enqueue(periodicWorkRequest);
         });
     }
 
+    private void loadUnique() {
 
+        btnUnique = v.findViewById(R.id.frag_work_manager_btn_unique_work);
+        btnUnique.setOnClickListener(view -> {
+            WorkManager.getInstance(getActivity())
+                    .enqueueUniqueWork("myUnique work", ExistingWorkPolicy.REPLACE, workRequestOne);
+        });
+    }
+
+    private void loadWorkerOne() {
+        btnWorkerOne = v.findViewById(R.id.frag_work_manager_btn_worker_one);
+        btnWorkerOne.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerOne: BtnPressed");
+            WorkManager.getInstance(getActivity()).enqueue(workRequestOne);
+        });
+
+        btnCancelOne = v.findViewById(R.id.frag_work_manager_btn_cancel_one);
+        btnCancelOne.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerOne: btnCancel");
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestOne.getId());
+        });
+    }
+
+    private void loadWorkerTwo() {
+        btnWorkerTwo = v.findViewById(R.id.frag_work_manager_btn_worker_two);
+        btnWorkerTwo.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerTwo: BtnPressed");
+            WorkManager.getInstance(getActivity()).enqueue(workRequestTwo);
+        });
+
+        btnCancelTwo = v.findViewById(R.id.frag_work_manager_btn_cancel_two);
+        btnCancelTwo.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerTwo: BtnCancel");
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestTwo.getId());
+        });
+    }
+
+    private void loadWorkerThree() {
+        btnWorkerThree = v.findViewById(R.id.frag_work_manager_btn_worker_three);
+        btnWorkerThree.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerThree: BtnPressed");
+            WorkManager.getInstance(getActivity()).enqueue(workRequestThree);
+        });
+
+        btnCancelThree = v.findViewById(R.id.frag_work_manager_btn_cancel_three);
+        btnCancelThree.setOnClickListener(view -> {
+            Log.d(TAG, "loadWorkerThree: btnCanceled");
+            WorkManager.getInstance(getActivity()).cancelWorkById(workRequestThree.getId());
+        });
+    }
+
+    private void loadCancelAll() {
+        btnCancelAll = v.findViewById(R.id.frag_work_manager_btn_cancel_all);
+        btnCancelAll.setOnClickListener(view -> {
+            Log.d(TAG, "loadCancelAll: btnPressed");
+            WorkManager.getInstance(getActivity()).cancelAllWork();
+        });
+    }
 }
