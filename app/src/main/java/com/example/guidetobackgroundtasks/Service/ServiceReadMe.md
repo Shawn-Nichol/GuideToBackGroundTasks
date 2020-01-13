@@ -1,26 +1,109 @@
 # Services
-A service is an application component that can perform operation in the background and doesn't provide
-a user interface. Application component can start a service, and it continues to run in the background
-even if the user switches to another application. Additionally a component can bind to a service to 
-interact with it nad even perform interprocess communication (IPC).  
+A service is an application component that can perform without a user interface. Application component
+can start a service, and it continues to run in the background even if the user switches to another
+application. There are three types of services Background, Foreground, Bound.  
 
 ## Fragment Instructions
 This fragment will run through different version and scenarios of services. Flip the switch back and 
 forth to show that the service isn't running on the main thread.
 
 **SERVICE Button**, will start and stop the service. This service is running on the main thread, 
-if change the state of the switch you will notice it does not move. If you close the app the 
-for loop will finish running and then the service will destroy it self, the service will also destroy itself
-after minute. 
+if you change the state of the switch you will notice it does not move well the service is running.
+If you close the app the for loop will finish running and then the service will destroy it self, 
+the service will also destroy itself after a minute. 
+
+**BACKGROUND SERVICE Button**, runs a service on the background thread, you will notice that when the
+service is running you are able to change states of the switch on the bottom of the fragment.
 
 **Foreground SERVICE Button**, Will start a service for 10 seconds and display a notification during
 the services life cycle. Notification does not stop the service. 
 
 
-## ForeGround Intent-Service.
+## Background Service.
+A Background service performs an operation that isn't directly noticed by the user.
+
+### How to create Background service
+- Create a Java class that extends Service.
+  - Create variables
+    - Looper
+    - ServiceHandler
+  - Create Inner class that extends Handler
+    - Override handleMessage()
+      - Create Constructor that passes Looper.
+      - doWork
+      - Stop thread when work is completed.
+  - Create empty constructor.
+  - Override onCreate()
+    - Create HandlerThread(name, process)
+    - Start Thread
+    - Get looper from thread
+    - Create serviceHandler object and pass looper
+  - Override onStartCommand()
+    - Create Message
+    - Send Message to Handler
+    - Return what todo if the service does not finish. 
+  - Override onBind()
+    - return null;
+  - Override onDestroy()
+    - Log, or provide user notification.
+- Manifest
+  - Add service to manifest
+```
+public class MyBackgroundService extends Service {
+    private Looper mLooper;
+    private ServiceHandler mServiceHandler;
+    
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+        
+        @Override
+        public void handleMessage(Message msg) {
+            // Work you want to run in the background
+            
+            stopSelf(msg.ar1);
+        }
+    }
+    
+    public MyBackgroundService() {
+    }
+    
+    @Override
+    public void onCreate() {
+        HandlerThread thread = new HandlerThread(name, process);
+        thread.start();
+        
+        mLooper = thread.getLooper();
+        mServiceHandler = new ServiceHandler(mLooper);
+    }
+    
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Message msg = mServiceHandler.obtainMessage();
+        msg.arg1 = startId;
+        mServiceHandler.sendMessage(msg);
+        
+        return START_STICKY;
+    }
+    
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    
+    @Override
+    public void onDestroy() {
+    super.onDestroy();
+    }
+}
+```    
+    
+    
+## Foreground Service.
 A Foreground service performs operations that are noticeable to the user.
 
-### How to create ForeGround intent service
+### How to create ForeGround service
 - Create Notification channel.
   - Create a new java class that extends **Application**.
     - Check App Build level
@@ -144,3 +227,23 @@ it will automatically be restarted.
 **startForegroundService()**
 Unlike startService this method can be used at any time, regardless of whether the app hosting the service
 is in the foreground state.
+
+**Looper**
+A class used to run a message loop for a thread. Threads by default do not have a message loop associated
+with them; to create one, call prepare() in the thread that needs a loop, and then loop() to have it 
+process messages until the loop is stopped.
+
+**Handler**
+A Handler allows you to send process Message and runnable objects associated with a threads's MessageQueue.
+Each Handler instance is associated with a single thread and that thread's message queue. When a new 
+Handler is created it is bound to that message queue.
+
+**HandlerThread**
+A Thread that has a looper, the looper can then be used to create Handlers
+
+**Message**
+Defines a message containing a description and arbitrary data object that can be sent to a handler.
+This object contains two extra int fields and an extra object field that allows you to not do 
+allocation in many cases.
+
+**Intent-Service**

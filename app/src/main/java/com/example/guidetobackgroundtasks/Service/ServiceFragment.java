@@ -1,8 +1,6 @@
 package com.example.guidetobackgroundtasks.Service;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -41,8 +39,6 @@ public class ServiceFragment extends Fragment {
         loadForeGroundService();
         loadBondService();
 
-
-
         return v;
     }
 
@@ -65,10 +61,16 @@ public class ServiceFragment extends Fragment {
     }
 
     private void loadBackgroundService() {
-        Button btn = v.findViewById(R.id.frag_service_btn_background);
+        Button btn = v.findViewById(R.id.frag_service_btn_background_service);
         btn.setOnClickListener(view -> {
+
             Intent intent = new Intent(getActivity(), MyBackgroundService.class);
             getActivity().startService(intent);
+        });
+
+        Button btnCancel = v.findViewById(R.id.frag_service_btn_cancel_background);
+        btnCancel.setOnClickListener(view -> {
+            getActivity().stopService(new Intent(getActivity(), MyBackgroundService.class));
         });
     }
 
@@ -88,12 +90,6 @@ public class ServiceFragment extends Fragment {
 
     }
 
-    private class StateReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-        }
-    }
 
 }

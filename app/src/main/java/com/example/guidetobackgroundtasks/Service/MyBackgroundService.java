@@ -7,6 +7,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Process;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -44,7 +45,7 @@ public class MyBackgroundService extends Service {
         Log.d(TAG, "onCreate: ");
         // Start the handler thread running the service.
         HandlerThread thread = new HandlerThread("StartBackgroundService",
-                Pro);
+                Process.THREAD_PRIORITY_BACKGROUND); // Android.os option
         thread.start();
 
         // Get the handlers thread looper
