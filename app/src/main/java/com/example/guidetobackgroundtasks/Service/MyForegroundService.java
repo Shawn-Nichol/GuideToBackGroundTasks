@@ -1,4 +1,4 @@
-package com.example.guidetobackgroundtasks.IntentService;
+package com.example.guidetobackgroundtasks.Service;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,16 +12,16 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.guidetobackgroundtasks.R;
 
-import static com.example.guidetobackgroundtasks.IntentService.App.CHANNEL_ID;
+import static com.example.guidetobackgroundtasks.Service.App.CHANNEL_ID;
 
-public class MyIntentService extends IntentService {
+public class MyForegroundService extends IntentService {
 
     private static final String TAG = "MyLogMyIntentService";
 
     private PowerManager.WakeLock wakeLock;
     
-    public MyIntentService() {
-        super("MyIntentService");
+    public MyForegroundService() {
+        super("MyForegroundService");
         setIntentRedelivery(true);
     }
 

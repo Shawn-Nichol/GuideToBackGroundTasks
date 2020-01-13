@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import com.example.guidetobackgroundtasks.AsyncTask.AsyncTaskFragment;
 import com.example.guidetobackgroundtasks.ExampleThread.ExampleThreadingFragment;
 import com.example.guidetobackgroundtasks.Handler.HandlerFragment;
-import com.example.guidetobackgroundtasks.IntentService.IntentServiceFragment;
+import com.example.guidetobackgroundtasks.Service.ServiceFragment;
 import com.example.guidetobackgroundtasks.JobScheduler.JobSchedulerFragment;
 import com.example.guidetobackgroundtasks.Looper.LooperFragment;
 import com.example.guidetobackgroundtasks.MultipleThreads.MultipleThreadsFragment;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_drawer_8:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
-                        new IntentServiceFragment()).commit();
+                        new ServiceFragment()).commit();
                 break;
             case R.id.nav_drawer_9:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,

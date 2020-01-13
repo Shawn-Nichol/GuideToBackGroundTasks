@@ -1,4 +1,4 @@
-package com.example.guidetobackgroundtasks.IntentService;
+package com.example.guidetobackgroundtasks.Service;
 
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -13,10 +13,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        createNotificationChannel();
-    }
-
-    private void createNotificationChannel() {
+        // Create Notification Channel
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
@@ -27,4 +24,5 @@ public class App extends Application {
             manager.createNotificationChannel(serviceChannel);
         }
     }
+
 }
