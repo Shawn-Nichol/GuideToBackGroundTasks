@@ -1,7 +1,7 @@
 # Services
 A service is an application component that can perform without a user interface. Application component
-can start a service, and it continues to run in the background even if the user switches to another
-application. There are three types of services Background, Foreground, Bound.  
+can start a service, and has lifecycle independent of the Application. There are three types of 
+services Background, Foreground, Bound.  
 
 ## Fragment Instructions
 This fragment will run through different version and scenarios of services. Flip the switch back and 
@@ -247,3 +247,8 @@ This object contains two extra int fields and an extra object field that allows 
 allocation in many cases.
 
 **Intent-Service**
+
+TODO: 
+Create Bound service
+Background service pass data back to UI thread
+Foreground service pass data back to UI thread
