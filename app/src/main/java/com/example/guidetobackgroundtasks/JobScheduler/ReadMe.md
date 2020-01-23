@@ -11,64 +11,83 @@ of the job.
 - Create a new class that extends **JobService**
   - **Override onStartJob**
       - Create a new thread, and run the function
-      ```
-      new Thread(() -> {
-          // Do something
-      }).start();
-      ```
-      - Call **jobFinished()** </br>
-      ```jobFinsished(params, false)```
   - **Override onStopJob**
     - Call onStopJob when you want to pause the job.
+```
+public class MyJobService extneds JobService {
+
+    private boolean jobCancelled = false;
+
+    @Override
+    public boolean onStartJob(JobParameters params) {
+        new Thread(() -> {
+            if(jobCancelled == true) {
+                return;
+            } 
+            
+            // Run code here. 
+            
+        }).start();
+    }
+    
+    @Override
+    public boolean onStopJob(JobParameters params) {
+        jobCancelled true; 
+    }
+    
+}
+```
 
 - Fragment/Activity
   - Setup Job scheduler in a button. 
-    - Create ComponentName </br>
-    ```ComponentName componentName = ComponentName(context, MyServiceClass.class);```
-    - Create JobInfo </br>
-    ```
-    JobInfo info = new JobInfo.Builder(id, componentName)
+    - Create ComponentName
+    - Create JobInfo
+    - Create JobScheduler object.
+    - Check results of JobScheduler
+  - Stop job in a button
+    - Get JobScheduler object.
+    - Cancel job.
+- **AndroidManifest.xml**
+    - Add service with permission **BIND_JOB_SERVICE**.
+```
+ <service android:name=".MyJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+```
+
+```
+
+btnStart.setOnclickListener(view -> {
+    ComponenetName componenetName = ComponentName(Context, MyService.class);
+    
+    JobInfo info = new JobInfo.Builder(id, componenetName)
         .settings
         .build();
-    ```
-    - Create JobScheduler object. </br>
-    ```JobScheduler scheduler = (JobScheduler) getActivity.getSystemService(JOB_SCHEDULER_SERVICE);```
-    - Check results of JobScheduler </br>
-    ```
+        
+    JobScheduler scheduler = (JobScheduler) getActivity.getSystemService(JOB_SCHEDULER_SERVICE);
+    
     int resultCode = scheduler.schedule(info);
-    if(resultCode = JobScheduler.RESULT_SUCCESS) {
-        Log success
+    if(resultCode == JobScheduler.RESULT_SUCCESS) {
+        Log.d(TAG, "onCreateView: success");
     } else {
-        Log failer
+        Log.d(TAG, "onCreateView: failed");
     }
-    ```
-  - Stop job in a button
-    - Get JobScheduler object. </br>
-    ```JobScheduler scheduler = (JobScheduler) getActivity.getSystemSerivce(JOB_SCHEDULER_SERVICE);```
-    - Cancel job. </br>
-    ```scheudler.cancel(id of service)``` 
-- **AndroidManifest.xml**
-    - Add service with permission **BIND_JOB_SERVICE**. </br>
-    ```
-    <service android:name=".MyJobService"
-        android:permission="android.permission.BIND_JOB_SERVICE"/>
-                ```
+}
+
+btnStop.setOnClickListner(view -> {
+    JobScheduler scheduler = (JobScheduler) getActivity.getSystemSerivce(JOB_SCHEDULER_SERVICE);
+    scheudler.cancel(id of service)
+}
+```
     
+### Description
     
-    
-    
-    
-    
-    
-    
-### ComponentName:
+**ComponentName**
 Identifier for a specific application component(Activity, service, BroadcastReceiver, ContentProvider) 
 that is available. Requires the package and the class name. 
 
-###  JobFinished()
+**JobFinished()**
 Informs the the JobScheduler the work is done.
 
-### JobInfo()
+**JobInfo()**
 Container of data passed to the JobScheduler fully encapsulating the parameters required to schedule 
 work against the calling application. Constructed with JobInfo.Builder. At least one sort of constraint
 is required.

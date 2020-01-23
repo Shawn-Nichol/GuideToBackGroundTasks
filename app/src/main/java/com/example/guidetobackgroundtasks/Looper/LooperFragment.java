@@ -23,10 +23,7 @@ import static com.example.guidetobackgroundtasks.Looper.LooperHandler.TASK_B;
 public class LooperFragment extends Fragment {
 
     View v;
-    Button btnStart;
-    Button btnStop;
-    Button btnTaskA;
-    Button btnTaskB;
+    Button btnStart, btnStop, btnTaskA, btnTaskB;
 
     private LooperLooper looperThread = new LooperLooper();
 

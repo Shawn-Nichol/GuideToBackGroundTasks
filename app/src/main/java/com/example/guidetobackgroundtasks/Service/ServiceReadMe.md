@@ -246,9 +246,119 @@ Defines a message containing a description and arbitrary data object that can be
 This object contains two extra int fields and an extra object field that allows you to not do 
 allocation in many cases.
 
-**Intent-Service**
 
-TODO: 
-Create Bound service
-Background service pass data back to UI thread
-Foreground service pass data back to UI thread
+## Bound Service
+A bound service is the server in a client-server interface. It allows components to bind to the service,
+send requests, receive responses and Perform Interprocess Communication (IPC). A bound service typically
+lives only while it serves another application component and does not run in the background indefinitely.
+
+A bound service is an implementation of the Service class that allows other application to bind to it 
+and interact with it. To provide binding for a service, you must implement the onBind() callback method. 
+This method returns an IBinder object that defines the programming interface that clients can use to interact
+with the service. 
+
+### How to create a bound Service
+- Create a Java class that extends service
+  - @Override onCreate()
+  - @Override onBind()
+     - return Binder
+  - Create inner class that extends Binder
+    - BoundService, return binder.
+  - create method that does work
+```
+public class MyBoundService extends Service {
+
+    priate IBinder mBinder = new MyBinder();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // start service code
+    }
+    
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return Binder
+    }
+    
+    public class MyBinder extends Binder{
+        BoundService getService() {
+            return BoundService.this;
+        }
+    }
+    
+    public void doSomethingMethod() {
+    
+    }
+
+}
+```
+- startService from Activity or Fragment.
+  - Create ServiceConnection
+    - @Override onServiceConnected()
+    - @Override onServiceDisconnected()
+  - @Override onResume()
+    - Create Intent
+      - Create serviceIntent(Context, Service class)
+      - startService
+      - Create bindIntent(Context, Service class)
+      - bindService(bindIntent, serviceConnection, Context.number)
+  - @Override onStop(), disconnect the service.
+```
+public ServiceConnection serviceConnection = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(Component Name name, IBinder iBinder) {
+        MyBoundService.MyBinder binder = (MyBoundService.MyBinder) iBinder;
+        mBinder.postValue();
+    }
+    
+    @Override
+    public void onServiceDisconnect(ComponentName name) {
+        mBinder.postValue(null);
+    }
+}
+
+@Override
+public void onResume() {
+    Intent serviceIntent = new Intent(getActivity(), MyBoundService.class);
+    getActivity().startService(serviceIntent);
+    
+    Intent serviceBindIntent = new Intent(getActivity(), MyBoundService.class);
+    getActivity().bindService(serviceBindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+}
+
+@Override
+public void onStop() {
+    getActivity().unbindService(serviceConnection);
+}
+
+
+
+```
+
+
+## Description
+**onBind()**
+Return the communication channel to the service. May return null if clients can not bind to the service.
+
+**IBinder**
+Base interface for a remotable object, the core part of a lightweight remote procedure call mechanism 
+designed for high performance when performing in-process and cross-process calls. This interface describes
+the abstract protocol for interacting with a remotable object. Do not implement this interface directly
+instead extend Binder.
+
+**startService()**, **stopService()**
+requests the given application service to be started/stopped.
+
+**bindService**()
+Connect to an application service, creating it if needed. This defines a dependency between your application
+and the service. The given conn will receive the service object when it is created and be told if it dies and restarts.
+The service will be considered required by the system only for as long as the calling context exists
+
+**Handler**
+A Handler allows you to send and process Message and Runnable objects associated with a threads MessageQueue.
+
+**postValue()**
+Post a task to a main thread to set the given value
+

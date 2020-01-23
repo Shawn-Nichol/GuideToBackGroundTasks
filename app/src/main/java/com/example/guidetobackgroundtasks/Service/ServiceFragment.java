@@ -1,21 +1,16 @@
 package com.example.guidetobackgroundtasks.Service;
 
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Handler;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +33,9 @@ public class ServiceFragment extends Fragment {
     private ProgressBar mProgressBar;
     private TextView mProgressBarTV;
     private Button mBtnBound;
+
+    private BoundService mService;
+    private BoundServiceViewModel mViewModel;
 
     View v;
 
@@ -102,10 +100,6 @@ public class ServiceFragment extends Fragment {
 
     }
 
-
-    private BoundService mService;
-    private BoundServiceViewModel mViewModel;
-
     private void loadBondService() {
         mProgressBar = v.findViewById(R.id.frag_service_progressbar_bound);
         mProgressBarTV = v.findViewById(R.id.frag_service_tv_progress_bar);
@@ -116,24 +110,18 @@ public class ServiceFragment extends Fragment {
 
 
         mBtnBound.setOnClickListener(view -> {
-            toggleUpdates();
-        });
-
-    }
-
-    private void toggleUpdates() {
-        if (mService.getProgress() == mService.getMaxValue()) {
-            mService.resetTask();
-            mBtnBound.setText("Start");
-        } else {
-            if (mService.getIsPaused()) {
+            if (mService.getProgress() == mService.getMaxValue()) {
+                mService.resetTask();
+                mBtnBound.setText("Start");
+            } else if (mService.getIsPaused()) {
                 mService.unPausePretendLongRunningTask();
                 mViewModel.setIsProgressBarUpdating(true);
             } else {
                 mService.pausePretendLongRunningTask();
                 mViewModel.setIsProgressBarUpdating(false);
             }
-        }
+        });
+
     }
 
     private void setObservers() {
@@ -157,14 +145,14 @@ public class ServiceFragment extends Fragment {
                     @Override
                     public void run() {
                         if (mViewModel.getIsProgressBarUpdating().getValue()) {
-                            if (mViewModel.getBinder().getValue() != null) { // meaning the service is bound
+                            if (mViewModel.getBinder().getValue() != null) {
                                 if (mService.getProgress() == mService.getMaxValue()) {
                                     mViewModel.setIsProgressBarUpdating(false);
                                 }
+
                                 mProgressBar.setProgress(mService.getProgress());
                                 mProgressBar.setMax(mService.getMaxValue());
-                                String progress =
-                                        String.valueOf(100 * mService.getProgress() / mService.getMaxValue()) + "%";
+                                String progress = String.valueOf(100 * mService.getProgress() / mService.getMaxValue()) + "%";
                                 mProgressBarTV.setText(progress);
                             }
                             handler.postDelayed(this, 100);
@@ -177,41 +165,34 @@ public class ServiceFragment extends Fragment {
                 if (aBoolean) {
                     mBtnBound.setText("Pause");
                     handler.postDelayed(runnable, 100);
+                } else if (mService.getProgress() == mService.getMaxValue()) {
+                    mBtnBound.setText("Restart");
                 } else {
-                    if (mService.getProgress() == mService.getMaxValue()) {
-                        mBtnBound.setText("Restart");
-                    } else {
-                        mBtnBound.setText("Start");
-                    }
+                    mBtnBound.setText("Start");
                 }
             }
+
         });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        startService();
+        Intent serviceIntent = new Intent(getActivity(), BoundService.class);
+        getActivity().startService(serviceIntent);
+
+        Intent serviceBindIntent = new Intent(getActivity(), BoundService.class);
+        getActivity().bindService(serviceBindIntent, mViewModel.getServiceConnection(), Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(mViewModel.getBinder() != null) {
+        if (mViewModel.getBinder() != null) {
             getActivity().unbindService(mViewModel.getServiceConnection());
         }
-    }
-
-    public void startService() {
-        Intent serviceIntent = new Intent(getActivity(), BoundService.class);
-        getActivity().startService(serviceIntent);
-        bindService();
-    }
-
-    private void bindService() {
-        Intent serviceBindIntent = new Intent(getActivity(), BoundService.class);
-        getActivity().bindService(serviceBindIntent, mViewModel.getServiceConnection(), Context.BIND_AUTO_CREATE);
-
     }
 
 

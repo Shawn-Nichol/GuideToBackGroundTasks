@@ -3,25 +3,13 @@
 WorkManager is  a library used to enqueue deferrable work that is guaranteed to execute sometime after
 its constraints are met. There are two types of WorkManager, OneTimeWorkRequest, PeriodicWorkRequest,
 WorkRequest can also be combined to run at once.
-WorkRequest hav and associated ID that can be used for look ups, WorkRequests can also be canceled
+WorkRequest have an associated ID that can be used for look ups, WorkRequests can also be canceled
 
 
-## Constraints
-A specification of the requirements that need to be met before a WorkRequest can run. By default 
-WorkRequest do not have any constraints.
-
-### Create a constraints object
-Create a new constraints object.  
-  - add Parameters
-```
-Constraints myConstrains = new Constraints.Builder()
-    .build();
-```
-
-## OneTimeWorkRequest
+**OneTimeWorkRequest**
 A non-repeating WorkRequest.
 
-### Create OneTimeWorkRequest in a fragment
+## Create OneTimeWorkRequest in a fragment
 Create new work request object, This object will only run once unless you recreate it every time it
 runs.
 - OneTimeWorkRequest(WorkerClass)
@@ -37,11 +25,8 @@ OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(MyWorker.class)
     .build();
 ```
 
-## WorkerClass
-WorkerClass is the where the background work is done in WorkManager. It doesn't run or have communication
-with the UI thread.
 
-### Create WorkerClass
+## Create WorkerClass
 - Gradle, add dependencies.
   - implementation "androidx.work:work-runtime:$work_version"
 
@@ -207,3 +192,13 @@ WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(myWorker.getId())
         }
     }
 ``` 
+
+## Description
+
+**Constraints**
+A specification of the requirements that need to be met before a WorkRequest can run. By default 
+WorkRequest do not have any constraints.
+
+## WorkerClass
+WorkerClass is the where the background work is done in WorkManager. It doesn't run or have communication
+with the UI thread.
