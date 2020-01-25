@@ -1,24 +1,24 @@
-#Async Task
-**AsyncTask** allows you to perform background operations and publish results on the UI thread without
+# Async Task
+AsyncTask allows you to perform background operations and publish results on the UI thread without
 having to manipulate threads or handlers. AsyncTask is designed to be a helper class around **Thread**
-and **Handler** and does not constitute a generic threading framework. **AsyncTask** should be used
-for short operation. , and 4 steps called **onPreExecute**, **doInBackground**, 
-**onProgressUpdate** and **onPostExecute**.
+and Handler and does not constitute a generic threading framework. AsyncTask should be used
+for short operation. , and 4 steps called onPreExecute, doInBackground, 
+onProgressUpdate and onPostExecute.
 
-0
-**AsyncTask** must be subclassed to be used and Override **doInBackground**. 
 
-**AsyncTask** is defined by computation that runs on a background thread and 
+AsyncTask** must be subclassed to be used and Override doInBackground. 
+
+AsyncTask is defined by computation that runs on a background thread and 
 whose result is published on the UI thread. **AsyncTask** is defined by 3 generic types, called
-**Params**, **Progress**, **Result**
+Params, Progress, Result
 
-**Params:** The type of parameter sent to the task upon execution.
-**Progress:** the type of progress units published during the background computation.
-**Result:** The type of result of the background thread.
+Params: The type of parameter sent to the task upon execution.
+Progress: the type of progress units published during the background computation.
+Result: The type of result of the background thread.
 
 
-When **AsyncTask** is executed it will go through four steps. **AsyncTask** should be used for short
-operation. , and 4 steps called **onPreExecute**, **doInBackground**, **onProgressUpdate** and **onPostExecute**.
+When AsyncTask is executed it will go through four steps. AsyncTask should be used for short
+operation. , and 4 steps called onPreExecute, doInBackground, onProgressUpdate and onPostExecute.
 
 1) **onPreExecute()**, invoked on the UI thread before the task is executed. This step is normally used to 
 setup the task, for instance by showing a progress bar.
@@ -42,3 +42,46 @@ There are a few threading rules that must be followed for this class to work pro
 - Execute must be invoked on the UI thread.
 - Do not call onPreExecute, onPostExecute, doInBackground, onProgressUpdate manually.
 - The task can be execute only once, an exception will be thrown
+
+## How to create a Async task
+- Create an inner class that extends AsyncTask
+  - Override onPreExecute()
+  - Override doInBackground()
+  - Override onProgressUpdate
+  - Override onPostExecute
+  
+ ```
+    private class MyAsyncTask extends AsyncTask<void, void, void> {
+        @Override
+        protected onPreExecute() {
+            // Do work before 
+        }
+        
+        @Override
+        protected String doInBackground() {
+            // Do work in background.
+        }
+        
+        @Override
+        protexted void onProgressUpdate(Integer... values) {
+            // Update status of work on the UI thread.
+        }
+        
+        @Override
+        protected void onPostExecute(String S) {
+            // Run after async task work is completed.
+        }
+    
+    }
+ ```
+- Call Async task
+  - in a button 
+    - Create MyAsyncTask object
+    - execute the task
+```
+btn.onSetClickListener(view -> {
+    MyAsyncTask task = new MyAsyncTask(this);
+    task.execute;
+});
+```    
+  

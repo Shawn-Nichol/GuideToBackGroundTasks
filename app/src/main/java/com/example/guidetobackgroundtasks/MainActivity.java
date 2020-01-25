@@ -16,7 +16,6 @@ import com.example.guidetobackgroundtasks.Handler.HandlerFragment;
 import com.example.guidetobackgroundtasks.Service.ServiceFragment;
 import com.example.guidetobackgroundtasks.JobScheduler.JobSchedulerFragment;
 import com.example.guidetobackgroundtasks.Looper.LooperFragment;
-import com.example.guidetobackgroundtasks.MultipleThreads.MultipleThreadsFragment;
 import com.example.guidetobackgroundtasks.Runnable.RunnableFragment;
 import com.example.guidetobackgroundtasks.ThreadPool.ThreadPoolFragment;
 import com.example.guidetobackgroundtasks.WorkManager.WorkManagerFragment;
@@ -73,10 +72,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_drawer_4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
                         new HandlerFragment()).commit();
-                break;
-            case R.id.nav_drawer_5:
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,
-                        new MultipleThreadsFragment()).commit();
                 break;
             case R.id.nav_drawer_6:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,

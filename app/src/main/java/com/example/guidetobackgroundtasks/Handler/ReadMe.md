@@ -10,8 +10,65 @@ them as they come out of the message queue.
 2) To enqueue and action to be performed on a different thread.
 
 ## Builder a Handler. 
-
-
+- Create Handler Thread class extend HandlerThread
+  - include a constructor.
+  - Create handler object
+  - Override onLooperPrepared()
+    - run handler through switch statement
+  - Create getter for handler
+  
+```
+public class MyHandlerThread extends HandlerThread {
+    
+    private handler;
+    
+    public MyHandlerThread() {
+        super("MyHandler", Process.THREAD_PRIORITY_BACKGROUND)
+    }    
+    
+    @Override 
+    protected void onLooperPrepared() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Messsage msg) {
+                switch (mst) {
+                    cast TASK_ONE:
+                        // DO work
+                        break;
+                    case TASK_TWO:
+                        // Do work
+                        break;
+                    
+                }
+                    
+            }
+        }
+    }
+    
+    public Handler getHandler() {return handler;}
+    
+}
+```
+  
+- Start Handler
+  - Create HandlerThread object
+  - start HandlerThread
+  - Create Message
+  - attach handler and message to HandlerThread.
+```
+    private MyHandlerThread myHandlerThread() = new MyHandlerThread();
+    
+    myHandlerThread().start
+    
+    btn.setOnClickListener(view ->  {
+        Message msg = Message.obtain();
+        msg.what = "Task One"
+        msg.arg = 19
+        myHandlerThread.getHandler().sendMessage();
+            
+    });
+``` 
+  
 
 ## Descriptions
 **HandlerThread** is a Thread that has Looper. The Looper can then be used to create Handlers.
